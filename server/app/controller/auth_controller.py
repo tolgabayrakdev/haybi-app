@@ -1,7 +1,12 @@
 from fastapi import APIRouter
 from fastapi import Response, HTTPException, Request
 from app.service.auth_service import AuthService
-from app.schema.auth_schema import LoginUser, RegisterUser, UserRegisterResponse
+from app.schema.auth_schema import (
+    LoginUser,
+    RegisterUser,
+    UserRegisterResponse,
+    UserVerifyResponse,
+)
 import jwt
 
 auth_router = APIRouter()
@@ -43,10 +48,14 @@ async def verify_user(request: Request):
         if auth_header is not None:
             decoded_token = jwt.decode(auth_header, "secret_key", algorithms=["HS256"])
             id = decoded_token["payload"]["user_id"]
-            result = AuthService.user_information(id)
+            result: UserVerifyResponse = AuthService.user_information(id)
             return {
                 "success": True,
-                "user": {"username": result.username, "email": result.email},
+                "user": {
+                    "username": result.username,
+                    "email": result.email,
+                    "role": result.role.name,
+                },
             }
         else:
             raise HTTPException(status_code=401, detail="Unauthorization")

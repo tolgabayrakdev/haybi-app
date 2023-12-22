@@ -25,3 +25,10 @@ class RegisterUser(BaseModel):
 class UserRegisterResponse(BaseModel):
     username: str
     email: str
+
+
+
+class UserVerifyResponse(BaseModel):
+    username: str
+    email: str
+    role: str
