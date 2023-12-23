@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class CurrentUser(BaseModel):
@@ -17,7 +17,9 @@ class LoginUser(BaseModel):
 
 
 class RegisterUser(BaseModel):
-    username: str
+    username: str = Field(
+        max_length=10
+    )
     email: str
     password: str
 
