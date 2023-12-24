@@ -2,6 +2,13 @@
 
 1. Auth Service:
     - [x] Login
-    - [] Register
-    - [] Log out
-    - [] Verify
+    - [x] Register
+    - [x] Log out
+    - [x] Verify
+
+
+### Sektör Analiz
+
+- Yiyecek, içecek, cafe
+- Kıyafet, Satış
+- Diyestisyen 
