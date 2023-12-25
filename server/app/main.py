@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from .database import engine
 from . import model
 from fastapi.middleware.cors import CORSMiddleware
-from app.controller import auth_controller
+from app.controller import auth_controller, client_router
 
 
 model.Base.metadata.create_all(bind=engine)
@@ -26,3 +26,4 @@ async def index():
 
 
 app.include_router(router=auth_controller.auth_router, prefix="/api/v1/auth")
+app.include_router(router=client_router.client_router, prefix="/api/v1/client")
