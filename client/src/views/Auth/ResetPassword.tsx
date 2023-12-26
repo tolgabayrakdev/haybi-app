@@ -14,8 +14,6 @@ export default function ResetPassword({ }: Props) {
     return (
         <div>
 
-
-
             <Box
                 sx={{
                     position: "relative",

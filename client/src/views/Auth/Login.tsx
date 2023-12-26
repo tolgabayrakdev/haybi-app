@@ -4,8 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import GoogleIcon from '@mui/icons-material/Google';
 
-const backendUrlPrefix = import.meta.env.VITE_BACKEND_URL_PREFIX
-
 const schema = z.object({
   email: z.string().email({ message: "Geçersiz email adresi" }),
   password: z.string().min(6, { message: "Şifre en az 6 karakter olmalıdır" }),
@@ -16,7 +14,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [open2, setOpen2] = useState(false);
 
   const navigate = useNavigate();
@@ -40,24 +38,31 @@ const Login = () => {
 
   const handleSubmit = async (formData: { email: string, password: string }) => {
 
-    const result = await fetch(backendUrlPrefix + "/auth/login", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: "include",
-      body: JSON.stringify({ email: formData.email, password: formData.password })
-    })
-    console.log(result);
-    if (result.status === 200) {
-      console.log("Form gönderildi!");
-      setOpen2(true);
-      navigate("/dashboard/app")
-    } else {
-      console.log("Login is not successful");
+    const url = "http://127.0.0.1:8000/api/v1/auth/login";
+    try {
+      const result = await fetch(url, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: "include",
+        body: JSON.stringify({ email: formData.email, password: formData.password })
+      })
+      console.log(result);
+      if (result.status === 200) {
+        console.log("Form gönderildi!");
+        setOpen2(true);
+        navigate("/dashboard/app")
+      } else {
+        console.log("Login is not successful");
+        setOpen(true);
+      }
+    } catch (e) {
+      console.log(e);
       setOpen(true);
     }
-  };
+  }
+
 
   const handleGoogleLogin = async () => {
     try {
@@ -116,10 +121,13 @@ const Login = () => {
       >
         <Snackbar
           open={open}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
           autoHideDuration={1000}
           message="Ups, can not login!"
           onClose={handleClose}
-        />
+        >
+          <Alert severity="error">Check your email or password!</Alert>
+        </Snackbar>
 
 
         <Snackbar

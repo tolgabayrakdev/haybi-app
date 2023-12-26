@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
-import { Grid, Box, Card, Button, TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Grid, Box, Card, Button, TextField, Snackbar, Alert } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 const schema = z.object({
@@ -19,6 +19,10 @@ const Register = () => {
   const [passwordError, setPasswordError] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
+  const [open, setOpen] = useState(false);
+
+
+  const navigation = useNavigate();
 
 
 
@@ -51,7 +55,25 @@ const Register = () => {
     }
   };
 
-  const handleSubmit = (formData: { email: string, password: string }) => {
+  const handleSubmit = async (formData: { email: string, password: string }) => {
+
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/v1/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include"
+      });
+      if (res.status === 201) {
+        navigation("/dashboard")
+      } else {
+        setOpen(true)
+      }
+    } catch (e) {
+      console.log(e);
+      setOpen(true)
+    }
     console.log("Form gönderildi!");
     console.log("Email: ", formData.email);
     console.log("Password: ", formData.password);
@@ -74,6 +96,15 @@ const Register = () => {
           },
         }}
       >
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={open}
+          autoHideDuration={1000}
+          message="Ups, account can not created!"
+        >
+          <Alert severity="error">Can not created. Check your information!</Alert>
+        </Snackbar>
+
         <Grid
           container
           spacing={0}
@@ -182,7 +213,7 @@ const Register = () => {
                 </Button>
 
                 <Grid container>
-               
+
                   <Grid item>
                     <Link className="hover:underline italic text-blue-500" to="/auth/login">Log in your account</Link>
                   </Grid>

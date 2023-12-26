@@ -1,6 +1,5 @@
 import { Card, Divider } from "@mui/material"
 import { useEffect, useState } from "react"
-type Props = {}
 
 type User = {
   id: number
@@ -9,8 +8,8 @@ type User = {
   email: string
 }
 
-export default function Account({ }: Props) {
-  const [user, setUser] = useState<User>([]);
+export default function Account() {
+  const [user, setUser] = useState<User[]>([]);
 
 
 
