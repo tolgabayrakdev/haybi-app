@@ -19,6 +19,7 @@ class ClientService:
             )
             db.add(client)
             db.commit()
+            return {"message": "Client created."}
         except SQLAlchemyError as e:
             db.rollback()
             raise HTTPException(status_code=500, detail=str(e))

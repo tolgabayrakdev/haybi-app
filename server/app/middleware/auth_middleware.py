@@ -11,12 +11,12 @@ async def auth_middleware(request: Request):
         # Token varsa, kullanıcı kimliğini doğrulayalım
         try:
             payload = jwt.decode(access_token, "secret_key", algorithms=["HS256"])
-            print(payload)
-            user_id = int(payload.get("payload"))
+            user_id = payload.get("payload")
             db = SessionLocal()
-            user = db.query(User).filter(User.id == user_id).first()
+            user = db.query(User).filter(User.id == user_id["user_id"]).first()
             if not user:
                 raise HTTPException(status_code=401, detail="Invalid token")
+            return user
         except jwt.ExpiredSignatureError:
             raise HTTPException(status_code=401, detail="Token has expired")
         except jwt.InvalidTokenError:

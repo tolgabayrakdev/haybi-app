@@ -13,6 +13,7 @@ client_router = APIRouter()
 async def create(
     client: CreateClient, auth_user: Annotated[User, Depends(auth_middleware)]
 ):
+    print("Auth_user:", auth_user)
     return ClientService.create(user=client, user_id=int(auth_user.id)) # type: ignore
 
 

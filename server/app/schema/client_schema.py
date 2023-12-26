@@ -10,4 +10,4 @@ class CreateClient(BaseModel):
 class UpdateClient(BaseModel):
     name: str
     surname: str
-    phone_number: float
+    phone_number: str
