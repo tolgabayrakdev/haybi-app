@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   experimentalStyled,
   useMediaQuery,
@@ -10,7 +10,6 @@ import Header from "./Header/Header";
 import Sidebar from "./Sidebar/Sidebar";
 import Footer from "./Footer/Footer";
 import { TopbarHeight } from "../../assets/global/Theme-variable";
-import AuthWrapper from "../../utils/AuthWrapper";
 
 
 
